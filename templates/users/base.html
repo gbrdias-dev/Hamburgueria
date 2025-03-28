@@ -1,68 +1,158 @@
-<style>
+<!DOCTYPE html>
+<html lang="pt-br">
 
-    /* Estilizando o menu superior */
-p {
-    background-color: #333;
-    color: white;
-    padding: 10px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-family: Arial, sans-serif;
-}
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Lanches</title>
+    <style>
+        :root {
+            --color-white: #fff;
+            --color-red: #e63636;
+            --color-dark1: #181818;
+            --color-dark2: #1e1e1e;
+            --color-green1: #4CAF50;
+            --color-green2: #2E7D32;
+            --background-login: rgb(33, 15, 49);
+        }
+        /* Resetando margens e preenchimento */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-a {
-    color: white;
-    text-decoration: none;
-    margin: 0 10px;
-    font-weight: bold;
-}
+        /* Corpo da página */
+        body {
+            font-family: Arial, sans-serif;
+            background-color:rgba(255, 255, 255, 0.07);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
 
-a:hover {
-    color: #00bcd4;
-}
+        /* Estilo do cabeçalho */
+        header {
+            background-color: #333;
+            color: var(--color-green1);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 255, 0, 0.1);
+        }
 
-button {
-    background-color: #e91e63;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
+        header .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
 
-button a {
-    color: white;
-    text-decoration: none;
-}
+        /* Links de navegação */
+        header nav {
+            display: flex;
+            gap: 20px;
+        }
 
-button:hover {
-    background-color: #d81b60;
-}
+        header nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
 
-/* Responsividade */
-@media (max-width: 600px) {
-    p {
-        flex-direction: column;
-        text-align: center;
-    }
+        header nav a:hover {
+            color:rgb(0, 255, 42);
+        }
 
-    a, button {
-        margin-top: 8px;
-    }
-}
+        /* Botões de login e logout */
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
 
+        .auth-buttons a,
+        .auth-buttons button {
+            background-color: var(--color-green2);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
 
+        .auth-buttons a:hover,
+        .auth-buttons button:hover {
+            background-color:var(--color-green1);
+        }
 
-</style>
+        /* Estilo de conteúdo */
+        main {
+            padding: 40px 20px;
+            flex-grow: 1; /* Garante que o conteúdo ocupe o espaço restante */
+        }
 
-<p>
-    <a href="{% url 'home' %}">Snake Lanches</a>
-    {% if user.is_authenticated %}
-        Olá, {{  user.username  }}
-        <button type="submit"><a href="/sair"> Sair </a></button>
-    {% else %}
-        <a href="{% url 'login' %}">Entrar</a>
-    {% endif %}      
-</p>
-{% block content %}{% endblock content %}
+        /* Footer */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            header nav {
+                flex-direction: column;
+                margin-top: 10px;
+            }
+
+            .auth-buttons {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="logo">Snake Lanches</div>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+        </nav>
+        <div class="auth-buttons">
+            {% if user.is_authenticated %}
+                <span>Olá, {{ user.username }}</span>
+                <button type="submit"><a href="/sair">Sair</a></button>
+            {% elif user.is_superuser %}
+                <button type="submit"><a href="{% url 'cadastro_produto' %}">Cadastro de produtos</a></button>
+            {% else %}
+                <a href="{% url 'login' %}">Entrar</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 Snake Lanches | Todos os direitos reservados</p>
+    </footer>
+
+</body>
+
+</html>

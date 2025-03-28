@@ -1,88 +1,127 @@
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Login</title>
-    </head>  
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-
-        body{
+        :root {
+            --color-white: #fff;
+            --color-red: #e63636;
+            --color-dark1: #181818;    
+            --color-dark2: #1e1e1e;
+            --color-green1:#4CAF50;         
+            --color-green2:#2E7D32;
+            --background-login: rgb(33, 15, 49);
+        }
+      
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: var(--color-dark1);
+            color: var(--color-white);
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: white;
+            height: 100vh;
+            margin: 0;
         }
-        .container{
-            display:flex;
-            font-family: Arial, Helvetica, sans-serif;
-            color: white;
-            align-items: center;
-            flex-direction: column;
+
+        .container {
+            background-color: var(--color-dark2);
+            padding: 2rem;
             border-radius: 20px;
-            height: 50%;
-            width: 15%;
-            justify-content: center;
-            background-color:black;
-            box-shadow: 0px 0px 4px 4px rgb(9, 27, 2);
-            padding: 14px;
-            justify-items: center;
+            width: 90%;
+            max-width: 400px;
+           
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        input[type=text], input[type=password], input[type=email]{
-        width: 100%;
-        padding: 10px 20px;
-        margin: 8px 0;
-        display: inline-block;
-        box-sizing: border-box;
-        border-radius: 2px;
-    
-    }
+        input[type=email], input[type=password] {
+            width: 100%;
+            padding: 10px 10px;
+            margin: 8px 0;
+            border: 2px solid var(--color-dark1);
+            border-radius: 5px;
+            background-color: var(--color-dark1);
+            color: var(--color-white);
+            outline: none;
+            transition: border-color 0.3s ease-in-out;
+        }
 
+        input[type=email]:focus, input[type=password]:focus {
+            border-color: var(--color-green1);
+        }
+       
         button {
-        background-color: white;
-        color: goldenrod;
-        padding: 14px 20px;
-        margin: 8px 0;
-        border: none;
-        cursor: pointer;
-        border-radius: 20px;
-        width: 100%;
-    }
+            background-color: var(--color-green2);
+            color: var(--color-white);
+            padding: 12px 16px;
+            margin: 8px 0;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out;
+        }
 
-    .error-message {
-    color: red;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
+        button:hover {
+            background-color: var(--color-green1);
+        }
+        a{
+            color: #fff;
+        }
+        button a {
+            text-decoration: none;
+            color: var(--color-white);
+        }
 
+        .error-message {
+            color: var(--color-red);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
 
-    </style>    
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                width: 85%;
+            }
+        }
 
-
+        @media (max-width: 480px) {
+            .container {
+                width: 95%;
+            }
+            input[type=email], input[type=password] {
+                padding: 8px;
+            }
+            button {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
     <div class="container">
-
         <div class="error-message">
-            {% for message in messages %}
-              <p>{{ message }}</p>
-            {% endfor %}
-          </div>
-
-
+            {% if messages %}
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
         <h3>Login</h3>
-        <form action="{% url 'login' %}" method="post">
-        {% csrf_token %}
-
-
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
             <input type="email" name="email" id="email" placeholder="Digite seu email..." required>
-
-            <br>
-
             <input type="password" name="senha" id="senha" placeholder="Digite sua senha..." required>
-            <br>
-            <button type="submit">Entrar</button> 
-            <button><a href="{% url 'cadastrar' %}">Criar Conta</a></button> 
-            
-            <a href="{% url 'password_reset_form' %}">Esqueci a senha</a>
-
-
-        </form> 
-    </div>   
+            <button type="submit">Entrar</button>
+            <a href="{% url 'cadastrar' %}">Criar Conta</a>
+            <a  href="{% url 'password_reset_form' %}">Esqueci a senha</a>
+        </form>
+    </div>
+</body>
+</html>

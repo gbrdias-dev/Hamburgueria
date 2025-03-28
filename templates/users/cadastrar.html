@@ -1,93 +1,116 @@
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Crie a sua conta!</title>
-    </head>  
-    
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro 🐍 Burguer</title>
+    <link rel="icon" type="image/png" href="imgs/logo3.png">
     <style>
-
-        body{
+        :root {
+            --color-white: #fff;
+            --color-red: #e63636;
+            --color-dark1: #181818;
+            --color-dark2: #1e1e1e;
+            --color-green1: #4CAF50;
+            --color-green2: #2E7D32;
+            --background-login: rgb(33, 15, 49);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: var(--color-dark1);
+            color: var(--color-white);
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: white;
+            height: 100vh;
         }
-        .container{
-            display:flex;
-            font-family: Arial, Helvetica, sans-serif;
-            color: white;
-            align-items: center;
+        .content {
+            background-color: var(--color-dark2);
+            padding: 2rem;
+            border-radius: 10px;
+            min-width: 30%;
+            overflow: auto;
+        }
+        h1 {
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        .content form {
+            display: flex;
             flex-direction: column;
-            border-radius: 20px;
-            height: 50%;
-            width: 20%;
-            justify-content: center;
-            background-color:black;
-            box-shadow: 2px 2px 6px 6px rgb(9, 27, 2);
-            padding: 14px;
-            justify-items: center;
+            gap: 1rem;
         }
-
-        input[type=text], input[type=password], input[type=email]{
-        width: 100%;
-        padding: 10px 20px;
-        margin: 8px 0;
-        display: inline-block;
-        box-sizing: border-box;
-        border-radius: 2px;
-    
-    }
-
-        button {
-        background-color: white;
-        color: goldenrod;
-        padding: 14px 20px;
-        margin: 8px 0;
-        border: none;
-        cursor: pointer;
-        border-radius: 20px;
-        width: 100%;
-    }
-
-    .error-message {
-    color: red;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-
-    </style>    
-
+        .span-required {
+            font-size: 12px;
+            margin: 3px 0 0 1px;
+            color: var(--color-red);
+            display: none;
+        }
+        .inputs {
+            padding: 8px 5px;
+            outline: none;
+            border-radius: 5px;
+            background-color: var(--color-dark1);
+            border: 2px solid var(--color-dark1);
+            color: var(--color-white);
+            width: 100%;
+            box-sizing: border-box;
+            transition: .3s;
+        }
+        .inputs:focus {
+            border-color: var(--color-green1);
+        }
+        button[type="submit"] {
+            padding: 1rem;
+            font-size: 1rem;
+            outline: none;
+            border: none;
+            border-radius: 5px;
+            margin-top: 1rem;
+            background-color: var(--color-green2);
+            color: var(--color-white);
+            cursor: pointer;
+            transition: .3s;
+        }
+        button[type="submit"]:hover {
+            background-color: var(--color-green1);
+        }
+    </style>
+</head>
 <body>
-
     <div class="container">
-
-        <div class="error-message">
-            {% for message in messages %}
-              <p>{{ message }}</p>
-            {% endfor %}
-          </div>
-
-
-        <h3>Crie a sua conta</h3>
-        <form action="{% url 'cadastrar' %}" method="post">
-            {% csrf_token %}
-
-            
-            <input type="text" name="nome" id="nome" placeholder="Digite seu nome" required>
-            <br>
-
-            <input type="email" name="email" id="email" placeholder="Digite seu email" required>
-            <br>
-            <input type="password" name="senha" id="senha" placeholder="Digite sua senha" maxlength="9" required>
-            <br>
-
-            <input type="password" name="confirma_senha" id="confirma_senha" placeholder="Digite sua senha novamente" maxlength="9" required>
-        
-            <button type="submit">Cadastrar</button>
-        </form>
+        <div class="content">
+            <h1>Cadastro Snake Burguer</h1>
+            <div class="error-message">
+                {% for message in messages %}
+                    <p>{{ message }}</p>
+                {% endfor %}
+            </div>
+            <form action="{% url 'cadastrar' %}" method="post" id="form">
+                {% csrf_token %}
+                <div class="nome">
+                    <input type="text" name="nome" id="nome" placeholder="Digite seu Nome" class="inputs required" oninput="nameValidate()" required>
+                    <span class="span-required">Nome deve ter no mínimo 4 caracteres</span>
+                </div>
+                <div class="email">
+                    <input type="email" name="email" id="email" placeholder="Digite seu Email" class="inputs required" oninput="emailValidate()" required>
+                    <span class="span-required">Digite um email válido</span>
+                </div>
+                <div class="senha">
+                    <input type="password" name="senha" id="senha" placeholder="Senha" class="inputs required" oninput="mainPasswordValidate()" maxlength="9" required>
+                    <span class="span-required">Digite uma senha com no mínimo 6 caracteres</span>
+                </div>
+                <div class="repetir-senha">
+                    <input type="password" name="confirma_senha" id="confirma_senha" placeholder="Repita sua senha" class="inputs required" oninput="comparePassword()" maxlength="9" required>
+                    <span class="span-required">Senhas devem ser compatíveis</span>
+                </div>
+                <button type="submit">Cadastrar</button>
+            </form>
+        </div>
     </div>
-
-</body>    
-
-
+</body>
 </html>
